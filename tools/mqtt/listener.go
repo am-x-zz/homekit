@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/awesome/homekit/app/config"
-	"github.com/awesome/homekit/app/messages"
-	"github.com/awesome/homekit/app/mosquitto"
+	"github.com/am-x/homekit/app/config"
+	"github.com/am-x/homekit/app/messages"
+	"github.com/am-x/homekit/app/mosquitto"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/golang/protobuf/proto"
 	"log"

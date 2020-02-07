@@ -7,8 +7,8 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"log"
 
-	"github.com/awesome/homekit/app/shared/messages"
-	"github.com/awesome/homekit/app/shared/transport"
+	"github.com/am-x/homekit/app/shared/messages"
+	"github.com/am-x/homekit/app/shared/transport"
 	"gobot.io/x/gobot/platforms/mqtt"
 )
 

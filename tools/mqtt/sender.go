@@ -4,9 +4,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/awesome/homekit/app/config"
-	"github.com/awesome/homekit/app/messages"
-	"github.com/awesome/homekit/app/mosquitto"
+	"github.com/am-x/homekit/app/config"
+	"github.com/am-x/homekit/app/messages"
+	"github.com/am-x/homekit/app/mosquitto"
 	"github.com/golang/protobuf/proto"
 )
 

@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/awesome/homekit/app/hub"
-	"github.com/awesome/homekit/app/hub/device"
-	"github.com/awesome/homekit/app/shared/transport/mqtt"
+	"github.com/am-x/homekit/app/hub"
+	"github.com/am-x/homekit/app/hub/device"
+	"github.com/am-x/homekit/app/shared/transport/mqtt"
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/platforms/raspi"
 

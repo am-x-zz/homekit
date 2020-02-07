@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/awesome/homekit/app/shared/messages"
-	"github.com/awesome/homekit/app/shared/transport/mqtt"
+	"github.com/am-x/homekit/app/shared/messages"
+	"github.com/am-x/homekit/app/shared/transport/mqtt"
 	"gobot.io/x/gobot"
 
 	mqtta "gobot.io/x/gobot/platforms/mqtt"

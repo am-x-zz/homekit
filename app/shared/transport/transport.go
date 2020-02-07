@@ -1,6 +1,6 @@
 package transport
 
-import "github.com/awesome/homekit/app/shared/messages"
+import "github.com/am-x/homekit/app/shared/messages"
 
 type AccessoryMessageHandler func(message *messages.ToAccessory) error
 type HubMessageHandler func(message *messages.ToHub) error

@@ -1,6 +1,6 @@
 package hub
 
-import "github.com/awesome/homekit/app/shared/messages"
+import "github.com/am-x/homekit/app/shared/messages"
 
 func LoadHubConfig() *messages.HubConfig {
 	return &messages.HubConfig{

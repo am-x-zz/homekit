@@ -1,8 +1,8 @@
 package device
 
 import (
-	"github.com/awesome/homekit/app/hub"
-	"github.com/awesome/homekit/app/shared/messages"
+	"github.com/am-x/homekit/app/hub"
+	"github.com/am-x/homekit/app/shared/messages"
 	"gobot.io/x/gobot"
 )
 

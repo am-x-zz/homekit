@@ -1,7 +1,7 @@
 package hub
 
 import (
-	"github.com/awesome/homekit/app/shared/transport"
+	"github.com/am-x/homekit/app/shared/transport"
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
 )

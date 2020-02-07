@@ -1,7 +1,7 @@
 package mosquitto
 
 import (
-	"github.com/awesome/homekit/app/config"
+	"github.com/am-x/homekit/app/config"
 	"github.com/eclipse/paho.mqtt.golang"
 )
 

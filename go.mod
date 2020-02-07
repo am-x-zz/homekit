@@ -1,4 +1,4 @@
-module github.com/awesome/homekit
+module github.com/am-x/homekit
 
 require (
 	github.com/brutella/hc v1.1.0

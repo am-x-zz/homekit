@@ -1,7 +1,7 @@
 package device
 
 import (
-	"github.com/awesome/homekit/app/emulator/accessory"
+	"github.com/am-x/homekit/app/emulator/accessory"
 	"github.com/brutella/hc"
 	"github.com/brutella/hc/log"
 	"strconv"

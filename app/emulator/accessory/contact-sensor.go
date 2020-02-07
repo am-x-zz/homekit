@@ -1,7 +1,7 @@
 package accessory
 
 import (
-	"github.com/awesome/homekit/app/shared/messages"
+	"github.com/am-x/homekit/app/shared/messages"
 	"github.com/brutella/hc/accessory"
 	"github.com/brutella/hc/service"
 )
