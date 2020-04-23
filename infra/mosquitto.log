@@ -5314,3 +5314,197 @@
 1563722834: Saving in-memory database to /mosquitto/data/mosquitto.db.
 1563727002: Saving in-memory database to /mosquitto/data/mosquitto.db.
 1563733263: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584945022: mosquitto version 1.6.9 starting
+1584945022: Config loaded from /mosquitto/config/mosquitto.conf.
+1584945022: Opening ipv4 listen socket on port 1883.
+1584945022: Opening ipv6 listen socket on port 1883.
+1584945060: New connection from 172.26.0.1 on port 1883.
+1584945060: New client connected from 172.26.0.1 as mqtt-explorer-b59662ec (p2, c1, k60).
+1584946536: New connection from 172.26.0.1 on port 1883.
+1584946536: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1584946570: New connection from 172.26.0.1 on port 1883.
+1584946570: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1584946821: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584948624: Client homekit-central has exceeded timeout, disconnecting.
+1584948625: Client homekit-hub has exceeded timeout, disconnecting.
+1584950503: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584953899: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584955698: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584957497: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584959296: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584961095: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584962894: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584964693: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584966492: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584972569: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584974388: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584976187: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584977986: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584979785: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584981584: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584984372: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584986171: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1584987970: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585036041: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585037840: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585039639: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585040026: Client mqtt-explorer-b59662ec disconnected.
+1585041438: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585043237: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1585050110: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587288042: mosquitto version 1.6.9 starting
+1587288042: Config loaded from /mosquitto/config/mosquitto.conf.
+1587288042: Opening ipv4 listen socket on port 1883.
+1587288042: Opening ipv6 listen socket on port 1883.
+1587288538: New connection from 172.26.0.1 on port 1883.
+1587288538: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587288548: New connection from 172.26.0.1 on port 1883.
+1587288548: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587289893: Client homekit-hub disconnected.
+1587289895: New connection from 172.26.0.1 on port 1883.
+1587289895: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587289981: Client homekit-hub disconnected.
+1587289984: New connection from 172.26.0.1 on port 1883.
+1587289984: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290080: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587290139: Client homekit-hub disconnected.
+1587290151: New connection from 172.26.0.1 on port 1883.
+1587290151: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290170: Socket error on client homekit-hub, disconnecting.
+1587290283: New connection from 172.26.0.1 on port 1883.
+1587290283: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290369: Socket error on client homekit-hub, disconnecting.
+1587290440: New connection from 172.26.0.1 on port 1883.
+1587290440: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290607: Socket error on client homekit-hub, disconnecting.
+1587290609: New connection from 172.26.0.1 on port 1883.
+1587290609: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290755: Socket error on client homekit-hub, disconnecting.
+1587290788: New connection from 172.26.0.1 on port 1883.
+1587290788: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587290814: Socket error on client homekit-hub, disconnecting.
+1587290978: New connection from 172.26.0.1 on port 1883.
+1587290978: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587291879: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587292146: Client homekit-hub disconnected.
+1587292148: New connection from 172.26.0.1 on port 1883.
+1587292148: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587292473: Client homekit-central disconnected.
+1587292475: New connection from 172.26.0.1 on port 1883.
+1587292475: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587292682: Client homekit-central disconnected.
+1587292684: New connection from 172.26.0.1 on port 1883.
+1587292684: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587293061: Client homekit-central disconnected.
+1587293064: New connection from 172.26.0.1 on port 1883.
+1587293064: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587293067: Client homekit-hub disconnected.
+1587293069: New connection from 172.26.0.1 on port 1883.
+1587293069: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587293678: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587294270: Client homekit-hub disconnected.
+1587294272: New connection from 172.26.0.1 on port 1883.
+1587294272: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587294275: Client homekit-central disconnected.
+1587294277: New connection from 172.26.0.1 on port 1883.
+1587294277: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587294365: Client homekit-hub disconnected.
+1587294366: New connection from 172.26.0.1 on port 1883.
+1587294366: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587294436: New connection from 172.26.0.1 on port 1883.
+1587294436: New client connected from 172.26.0.1 as mqtt-explorer-b59662ec (p2, c1, k60).
+1587294492: Client homekit-hub disconnected.
+1587294500: New connection from 172.26.0.1 on port 1883.
+1587294500: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587294528: Socket error on client homekit-hub, disconnecting.
+1587294539: New connection from 172.26.0.1 on port 1883.
+1587294539: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587294708: Client homekit-central disconnected.
+1587294711: New connection from 172.26.0.1 on port 1883.
+1587294711: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587294950: Socket error on client homekit-hub, disconnecting.
+1587294956: New connection from 172.26.0.1 on port 1883.
+1587294956: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587295257: Client homekit-hub disconnected.
+1587295258: New connection from 172.26.0.1 on port 1883.
+1587295258: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587295285: Client homekit-hub disconnected.
+1587295287: New connection from 172.26.0.1 on port 1883.
+1587295287: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587295335: Client homekit-hub disconnected.
+1587295336: New connection from 172.26.0.1 on port 1883.
+1587295336: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587295477: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587295490: Client homekit-hub disconnected.
+1587295545: New connection from 172.26.0.1 on port 1883.
+1587295545: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587295579: Client homekit-hub disconnected.
+1587295581: New connection from 172.26.0.1 on port 1883.
+1587295581: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587297276: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587298609: Client homekit-hub disconnected.
+1587298754: New connection from 172.26.0.1 on port 1883.
+1587298754: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587298993: Client homekit-hub disconnected.
+1587298995: New connection from 172.26.0.1 on port 1883.
+1587298995: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299037: Client homekit-hub disconnected.
+1587299038: New connection from 172.26.0.1 on port 1883.
+1587299038: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299075: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587299110: Client homekit-hub disconnected.
+1587299112: New connection from 172.26.0.1 on port 1883.
+1587299112: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299222: Client homekit-hub disconnected.
+1587299224: New connection from 172.26.0.1 on port 1883.
+1587299224: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299299: Client homekit-hub disconnected.
+1587299300: New connection from 172.26.0.1 on port 1883.
+1587299300: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299327: Client homekit-hub disconnected.
+1587299334: New connection from 172.26.0.1 on port 1883.
+1587299334: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299416: Socket error on client homekit-hub, disconnecting.
+1587299417: New connection from 172.26.0.1 on port 1883.
+1587299417: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299458: Socket error on client homekit-hub, disconnecting.
+1587299459: New connection from 172.26.0.1 on port 1883.
+1587299459: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299485: Socket error on client homekit-hub, disconnecting.
+1587299525: New connection from 172.26.0.1 on port 1883.
+1587299525: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299527: Client homekit-central disconnected.
+1587299529: New connection from 172.26.0.1 on port 1883.
+1587299529: New client connected from 172.26.0.1 as homekit-central (p2, c1, k30).
+1587299539: Socket error on client homekit-hub, disconnecting.
+1587299735: New connection from 172.26.0.1 on port 1883.
+1587299735: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299748: Socket error on client homekit-hub, disconnecting.
+1587299761: New connection from 172.26.0.1 on port 1883.
+1587299761: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587299780: Socket error on client homekit-hub, disconnecting.
+1587299800: New connection from 172.26.0.1 on port 1883.
+1587299800: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587300874: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587302449: Client homekit-hub disconnected.
+1587302452: New connection from 172.26.0.1 on port 1883.
+1587302452: New client connected from 172.26.0.1 as homekit-hub (p2, c1, k30).
+1587302673: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587308985: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587313145: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587318905: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587320704: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587325054: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587330752: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587334675: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587345845: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587349708: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587358704: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1587358950: Client homekit-central disconnected.
+1587358952: Client homekit-hub disconnected.
+1587359150: Client mqtt-explorer-b59662ec disconnected.
+1587362538: mosquitto version 1.6.9 starting
+1587362538: Config loaded from /mosquitto/config/mosquitto.conf.
+1587362538: Opening ipv4 listen socket on port 1883.
+1587362538: Opening ipv6 listen socket on port 1883.
+1587368358: Saving in-memory database to /mosquitto/data/mosquitto.db.

@@ -4,25 +4,23 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/am-x/homekit/app/hub"
 	"github.com/am-x/homekit/app/shared/messages"
-	"github.com/am-x/homekit/app/shared/transport"
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
 )
 
 type ContactSensor struct {
-	h        *hub.Hub
+	h        *Hub
 	devices  []gobot.Device
 	deviceID uint32
 	isOpen   bool
 }
 
-func (c *ContactSensor) GetDevices() []gobot.Device {
+func (c *ContactSensor) GetGobotDevices() []gobot.Device {
 	return c.devices
 }
 
-func NewContactSensor(h *hub.Hub, dc *messages.DeviceConfig) HubDevice {
+func NewContactSensor(h *Hub, dc *messages.DeviceConfig) HubDevice {
 	if cfg := dc.GetContactSensor(); cfg != nil {
 		dr := h.GetDigitalReader()
 
@@ -31,7 +29,7 @@ func NewContactSensor(h *hub.Hub, dc *messages.DeviceConfig) HubDevice {
 			return nil
 		}
 
-		driver := gpio.NewButtonDriver(dr, fmt.Sprintf("%d", cfg.InPin))
+		driver := gpio.NewButtonDriver(dr, fmt.Sprintf("%d", cfg.GetInPin()))
 
 		dev := &ContactSensor{
 			h:        h,
@@ -42,7 +40,6 @@ func NewContactSensor(h *hub.Hub, dc *messages.DeviceConfig) HubDevice {
 		_ = driver.On(gpio.ButtonPush, dev.onEvent)
 		_ = driver.On(gpio.ButtonRelease, dev.onEvent)
 		_ = driver.On(gpio.Error, dev.onError)
-		_ = h.Transport.OnHubMessage(h.HubID, dev.onMessage, transport.WithHubDeviceID(dc.DeviceID))
 
 		return dev
 	}
@@ -50,7 +47,7 @@ func NewContactSensor(h *hub.Hub, dc *messages.DeviceConfig) HubDevice {
 	return nil
 }
 
-func (c *ContactSensor) onMessage(message *messages.ToHub) error {
+func (c *ContactSensor) OnMessage(message *messages.ToHub) error {
 	if msg := message.GetGetContactSensorState(); msg != nil && msg.DeviceID == c.deviceID {
 		c.sendState()
 	}
@@ -69,18 +66,12 @@ func (c *ContactSensor) onEvent(s interface{}) {
 		c.sendState()
 		return
 	}
-
-	//TODO: log err
 }
 
 func (c *ContactSensor) sendState() {
-	m := &messages.ToAccessory{
+	c.h.MessageBus <- &messages.ToAccessory{
 		FromHub: c.h.HubID,
 		Message: &messages.ToAccessory_ContactSensorState{ContactSensorState: &messages.ContactSensorState{DeviceID: c.deviceID, Open: c.isOpen}},
-	}
-
-	if err := c.h.Transport.ToAccessory(m); err != nil {
-		log.Println("send to accessory", err)
 	}
 
 	log.Println("state is sent", c.isOpen)

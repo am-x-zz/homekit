@@ -4,7 +4,7 @@ volumes:
   mosquitto_data:
     external: true
 
-  dm_pg9_data:
+  redis_data:
     external: true
 
 services:
@@ -12,8 +12,17 @@ services:
     image: eclipse-mosquitto
     volumes:
       - mosquitto_data:/mosquitto/data
-      - /Users/alexander/go/projects/docker/homekit/mosquitto.conf:/mosquitto/config/mosquitto.conf
-      - /Users/alexander/go/projects/docker/homekit/mosquitto.log:/mosquitto/log/mosquitto.log
+      - /Users/a.matsenko/go/looplab/homekit/infra/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /Users/a.matsenko/go/looplab/homekit/infra/mosquitto.log:/mosquitto/log/mosquitto.log
     ports:
       - 1883:1883
       - 9001:9001
+
+  redis:
+    image: redis
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - 6320:6379
+    volumes:
+      - redis_data:/bitnami

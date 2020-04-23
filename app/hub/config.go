@@ -14,6 +14,19 @@ func LoadHubConfig() *messages.HubConfig {
 					},
 				},
 			},
+			{
+				DeviceID: 2,
+				Config: &messages.DeviceConfig_Switch{
+					Switch: &messages.SwitchConfig{
+						Inputs: []*messages.SwitchInput{
+							{Pin: 1, InputType: messages.SwitchInputType_SwitchInputTypeChange},
+							{Pin: 2, InputType: messages.SwitchInputType_SwitchInputTypeChange},
+							{Pin: 3, InputType: messages.SwitchInputType_SwitchInputTypeChange},
+						},
+						OutputPin: 5,
+					},
+				},
+			},
 		},
 	}
 }

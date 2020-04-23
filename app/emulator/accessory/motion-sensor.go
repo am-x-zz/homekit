@@ -6,53 +6,47 @@ import (
 	"github.com/brutella/hc/service"
 )
 
-type ContactSensor struct {
+type MotionSensor struct {
 	id  string
 	hid uint32
 
-	hks *service.ContactSensor
+	hks *service.MotionSensor
 	hka *accessory.Accessory
 }
 
-func NewContactSensor(id, name string, hardwareID uint32) *ContactSensor {
+func NewMotionSensor(id, name string, hardwareID uint32) *MotionSensor {
 	info := accessory.Info{
 		Name:         name,
 		Manufacturer: Manufacturer,
 	}
 
-	acc := &ContactSensor{
+	acc := &MotionSensor{
 		id:  id,
 		hid: hardwareID,
 		hka: accessory.New(info, accessory.TypeSensor),
 	}
 
-	acc.hks = service.NewContactSensor()
+	acc.hks = service.NewMotionSensor()
 	acc.hka.AddService(acc.hks.Service)
 
 	return acc
 }
 
-func (acc *ContactSensor) GetID() string {
+func (acc *MotionSensor) GetID() string {
 	return acc.id
 }
 
-func (acc *ContactSensor) GetAccessory() *accessory.Accessory {
+func (acc *MotionSensor) GetAccessory() *accessory.Accessory {
 	return acc.hka
 }
 
-func (acc *ContactSensor) GetHardwareID() uint32 {
+func (acc *MotionSensor) GetHardwareID() uint32 {
 	return acc.hid
 }
 
-func (acc *ContactSensor) ProcessMessage(msg *messages.ToAccessory) error {
+func (acc *MotionSensor) ProcessMessage(msg *messages.ToAccessory) error {
 	if m := msg.GetContactSensorState(); m != nil && m.GetDeviceID() == acc.GetHardwareID() {
-		s := 0
-
-		if m.GetOpen() {
-			s = 1
-		}
-
-		acc.hks.ContactSensorState.SetValue(s)
+		acc.hks.MotionDetected.SetValue(m.GetOpen())
 	}
 
 	return nil

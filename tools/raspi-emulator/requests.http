@@ -1,0 +1,10 @@
+POST http://localhost:8080/raspi/pins
+Content-Type: application/json
+
+{"items":[{"state":true,"id":"p1"},{"state":false,"id":"p2"}]}
+
+###
+GET http://localhost:8080/raspi/pins
+Accept: application/json
+
+###

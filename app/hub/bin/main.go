@@ -1,6 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"github.com/am-x/homekit/app/hub/mock"
+	"github.com/am-x/homekit/app/shared/messages"
+	"github.com/am-x/homekit/app/shared/transport"
+	"github.com/pkg/errors"
 	"log"
 
 	"github.com/am-x/homekit/app/hub"
@@ -12,34 +17,45 @@ import (
 	mqtta "gobot.io/x/gobot/platforms/mqtt"
 )
 
+const (
+	AdaptorRaspi = "raspi"
+	AdaptorMock  = "mock"
+)
+
 func main() {
 	var (
-		h = &hub.Hub{}
+		h                *device.Hub
+		adaptor          gobot.Adaptor
+		messageTransport transport.MessageTransport
+
+		adaptorType = "mock"
 
 		connections = make([]gobot.Connection, 0)
-		devices     = make([]gobot.Device, 0)
-
-		initializers = []device.Initializer{device.NewContactSensor}
 	)
 
-	hubConfig := hub.LoadHubConfig()
+	switch adaptorType {
+	case AdaptorRaspi:
+		adaptor = raspi.NewAdaptor()
+	case AdaptorMock:
+		adaptor = mock.NewAdaptor()
+	default:
+		log.Fatal(fmt.Sprintf("Unsupported adaptor type: %s", adaptorType))
+	}
 
 	mqttAdaptor := mqtta.NewAdaptor("tcp://10.0.1.2:1883", "homekit-hub")
 	connections = append(connections, mqttAdaptor)
+	connections = append(connections, adaptor)
 
-	h.HubID = hubConfig.HubID
-	h.Adaptor = raspi.NewAdaptor()
-	h.Transport = mqtt.NewTransport(mqttAdaptor)
+	messageTransport = mqtt.NewTransport(mqttAdaptor)
 
-	connections = append(connections, h.Adaptor)
-
-	for _, cfg := range hubConfig.Devices {
-		for _, init := range initializers {
-			if dev := init(h, cfg); dev != nil {
-				devices = append(devices, dev.GetDevices()...)
-			}
-		}
-	}
+	h = device.NewHub(
+		hub.LoadHubConfig(),
+		adaptor,
+		[]device.Factory{
+			device.NewContactSensor,
+			device.NewSwitch,
+		},
+	)
 
 	//cfg := i2c.NewMCP23017Driver(piAdaptor, i2c.WithBus(1), i2c.WithAddress(0x20))
 
@@ -70,7 +86,32 @@ func main() {
 
 	//devices = append(devices, cfg)
 
-	robot := gobot.NewRobot("homekit", connections, devices)
+	robot := gobot.NewRobot(
+		"homekit",
+		connections,
+		h.GetGobotDevices(),
+		func() {
+			err := messageTransport.OnHubMessage(h.HubID, func(message *messages.ToHub) error {
+				h.OnMessage(message)
+				return nil
+			})
+
+			if err != nil {
+				log.Println(errors.Wrap(err, "subscribe on hub message"))
+			}
+
+			go func() {
+				for {
+					select {
+					case msg := <-h.MessageBus:
+						if err := messageTransport.ToAccessory(msg); err != nil {
+							log.Println(errors.Wrap(err, "send message to accessory"))
+						}
+					}
+				}
+			}()
+		},
+	)
 
 	if err := robot.Start(); err != nil {
 		log.Fatal(err)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"github.com/am-x/homekit/app/shared/transport"
 	"log"
 
 	"github.com/am-x/homekit/app/emulator/accessory"
@@ -20,6 +21,8 @@ var processors = make(map[uint32]accessory.MessageProcessor)
 
 var MqttClientID = "homekit-central"
 
+var messageTransport transport.MessageTransport
+
 func main() {
 	var (
 		connections = make([]gobot.Connection, 0)
@@ -28,7 +31,7 @@ func main() {
 	mqttAdaptor := mqtta.NewAdaptor("tcp://10.0.1.2:1883", MqttClientID)
 	connections = append(connections, mqttAdaptor)
 
-	messageTransport := mqtt.NewTransport(mqttAdaptor)
+	messageTransport = mqtt.NewTransport(mqttAdaptor)
 
 	hclog.Debug.Enable()
 
@@ -103,19 +106,26 @@ func getAccessories() []accessory.Accessory {
 	//}()
 
 	acc2 := func() accessory.Accessory {
-		a := accessory.NewLightbulb("bulb1", "Lightbulb")
+		a := accessory.NewLightbulb("bulb1", "Light 1", 2)
+
+		a.GetService().On.OnValueRemoteUpdate(func(b bool) {
+			_ = messageTransport.ToHub(1, &messages.ToHub{
+				ToHub:   1,
+				Message: &messages.ToHub_SetSwitchState{SetSwitchState: &messages.SwitchState{DeviceID: a.GetHardwareID(), State: b}},
+			})
+		})
 
 		return a
 	}()
 
 	acc3 := func() accessory.Accessory {
-		a := accessory.NewTemperatureSensor("temp1", "Temp sensor in bedroom", 1, -20, 40, 0.1)
+		a := accessory.NewMotionSensor("motion1", "Motion sensor", 3)
 
 		return a
 	}()
 
 	acc4 := func() accessory.Accessory {
-		a := accessory.NewContactSensor("wnd1", "Window in bedroom")
+		a := accessory.NewContactSensor("wnd1", "Window in bedroom", 1)
 
 		return a
 	}()

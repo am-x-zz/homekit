@@ -77,6 +77,8 @@ type ToHub struct {
 	ToHub uint32 `protobuf:"varint,1,opt,name=ToHub,proto3" json:"ToHub,omitempty"`
 	// Types that are valid to be assigned to Message:
 	//	*ToHub_GetContactSensorState
+	//	*ToHub_GetSwitchState
+	//	*ToHub_SetSwitchState
 	Message              isToHub_Message `protobuf_oneof:"Message"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
@@ -123,7 +125,19 @@ type ToHub_GetContactSensorState struct {
 	GetContactSensorState *GetContactSensorState `protobuf:"bytes,5,opt,name=GetContactSensorState,proto3,oneof"`
 }
 
+type ToHub_GetSwitchState struct {
+	GetSwitchState *GetSwitchState `protobuf:"bytes,6,opt,name=GetSwitchState,proto3,oneof"`
+}
+
+type ToHub_SetSwitchState struct {
+	SetSwitchState *SwitchState `protobuf:"bytes,7,opt,name=SetSwitchState,proto3,oneof"`
+}
+
 func (*ToHub_GetContactSensorState) isToHub_Message() {}
+
+func (*ToHub_GetSwitchState) isToHub_Message() {}
+
+func (*ToHub_SetSwitchState) isToHub_Message() {}
 
 func (m *ToHub) GetMessage() isToHub_Message {
 	if m != nil {
@@ -139,10 +153,26 @@ func (m *ToHub) GetGetContactSensorState() *GetContactSensorState {
 	return nil
 }
 
+func (m *ToHub) GetGetSwitchState() *GetSwitchState {
+	if x, ok := m.GetMessage().(*ToHub_GetSwitchState); ok {
+		return x.GetSwitchState
+	}
+	return nil
+}
+
+func (m *ToHub) GetSetSwitchState() *SwitchState {
+	if x, ok := m.GetMessage().(*ToHub_SetSwitchState); ok {
+		return x.SetSwitchState
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*ToHub) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*ToHub_GetContactSensorState)(nil),
+		(*ToHub_GetSwitchState)(nil),
+		(*ToHub_SetSwitchState)(nil),
 	}
 }
 
@@ -189,6 +219,7 @@ type ToAccessory struct {
 	FromHub uint32 `protobuf:"varint,1,opt,name=FromHub,proto3" json:"FromHub,omitempty"`
 	// Types that are valid to be assigned to Message:
 	//	*ToAccessory_ContactSensorState
+	//	*ToAccessory_SwitchState
 	Message              isToAccessory_Message `protobuf_oneof:"Message"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
@@ -235,7 +266,13 @@ type ToAccessory_ContactSensorState struct {
 	ContactSensorState *ContactSensorState `protobuf:"bytes,5,opt,name=ContactSensorState,proto3,oneof"`
 }
 
+type ToAccessory_SwitchState struct {
+	SwitchState *SwitchState `protobuf:"bytes,6,opt,name=SwitchState,proto3,oneof"`
+}
+
 func (*ToAccessory_ContactSensorState) isToAccessory_Message() {}
+
+func (*ToAccessory_SwitchState) isToAccessory_Message() {}
 
 func (m *ToAccessory) GetMessage() isToAccessory_Message {
 	if m != nil {
@@ -251,10 +288,18 @@ func (m *ToAccessory) GetContactSensorState() *ContactSensorState {
 	return nil
 }
 
+func (m *ToAccessory) GetSwitchState() *SwitchState {
+	if x, ok := m.GetMessage().(*ToAccessory_SwitchState); ok {
+		return x.SwitchState
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*ToAccessory) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*ToAccessory_ContactSensorState)(nil),
+		(*ToAccessory_SwitchState)(nil),
 	}
 }
 
@@ -356,6 +401,7 @@ type DeviceConfig struct {
 	DeviceID uint32 `protobuf:"varint,1,opt,name=DeviceID,proto3" json:"DeviceID,omitempty"`
 	// Types that are valid to be assigned to Config:
 	//	*DeviceConfig_ContactSensor
+	//	*DeviceConfig_Switch
 	Config               isDeviceConfig_Config `protobuf_oneof:"Config"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
@@ -402,7 +448,13 @@ type DeviceConfig_ContactSensor struct {
 	ContactSensor *ContactSensorConfig `protobuf:"bytes,2,opt,name=ContactSensor,proto3,oneof"`
 }
 
+type DeviceConfig_Switch struct {
+	Switch *SwitchConfig `protobuf:"bytes,3,opt,name=Switch,proto3,oneof"`
+}
+
 func (*DeviceConfig_ContactSensor) isDeviceConfig_Config() {}
+
+func (*DeviceConfig_Switch) isDeviceConfig_Config() {}
 
 func (m *DeviceConfig) GetConfig() isDeviceConfig_Config {
 	if m != nil {
@@ -418,10 +470,18 @@ func (m *DeviceConfig) GetContactSensor() *ContactSensorConfig {
 	return nil
 }
 
+func (m *DeviceConfig) GetSwitch() *SwitchConfig {
+	if x, ok := m.GetConfig().(*DeviceConfig_Switch); ok {
+		return x.Switch
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*DeviceConfig) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*DeviceConfig_ContactSensor)(nil),
+		(*DeviceConfig_Switch)(nil),
 	}
 }
 
@@ -464,110 +524,103 @@ func (m *ContactSensorConfig) GetInPin() uint32 {
 	return 0
 }
 
-// -----------------------
-type SetSwitchState struct {
-	State                bool     `protobuf:"varint,1,opt,name=State,proto3" json:"State,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type SwitchConfig struct {
+	Inputs               []*SwitchInput `protobuf:"bytes,1,rep,name=Inputs,proto3" json:"Inputs,omitempty"`
+	OutputPin            uint32         `protobuf:"varint,2,opt,name=OutputPin,proto3" json:"OutputPin,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
-func (m *SetSwitchState) Reset()         { *m = SetSwitchState{} }
-func (m *SetSwitchState) String() string { return proto.CompactTextString(m) }
-func (*SetSwitchState) ProtoMessage()    {}
-func (*SetSwitchState) Descriptor() ([]byte, []int) {
+func (m *SwitchConfig) Reset()         { *m = SwitchConfig{} }
+func (m *SwitchConfig) String() string { return proto.CompactTextString(m) }
+func (*SwitchConfig) ProtoMessage()    {}
+func (*SwitchConfig) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4dc296cbfe5ffcd5, []int{7}
 }
 
-func (m *SetSwitchState) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SetSwitchState.Unmarshal(m, b)
+func (m *SwitchConfig) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SwitchConfig.Unmarshal(m, b)
 }
-func (m *SetSwitchState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SetSwitchState.Marshal(b, m, deterministic)
+func (m *SwitchConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SwitchConfig.Marshal(b, m, deterministic)
 }
-func (m *SetSwitchState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SetSwitchState.Merge(m, src)
+func (m *SwitchConfig) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SwitchConfig.Merge(m, src)
 }
-func (m *SetSwitchState) XXX_Size() int {
-	return xxx_messageInfo_SetSwitchState.Size(m)
+func (m *SwitchConfig) XXX_Size() int {
+	return xxx_messageInfo_SwitchConfig.Size(m)
 }
-func (m *SetSwitchState) XXX_DiscardUnknown() {
-	xxx_messageInfo_SetSwitchState.DiscardUnknown(m)
+func (m *SwitchConfig) XXX_DiscardUnknown() {
+	xxx_messageInfo_SwitchConfig.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SetSwitchState proto.InternalMessageInfo
+var xxx_messageInfo_SwitchConfig proto.InternalMessageInfo
 
-func (m *SetSwitchState) GetState() bool {
+func (m *SwitchConfig) GetInputs() []*SwitchInput {
 	if m != nil {
-		return m.State
+		return m.Inputs
 	}
-	return false
+	return nil
 }
 
-type GetSwitchState struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+func (m *SwitchConfig) GetOutputPin() uint32 {
+	if m != nil {
+		return m.OutputPin
+	}
+	return 0
 }
 
-func (m *GetSwitchState) Reset()         { *m = GetSwitchState{} }
-func (m *GetSwitchState) String() string { return proto.CompactTextString(m) }
-func (*GetSwitchState) ProtoMessage()    {}
-func (*GetSwitchState) Descriptor() ([]byte, []int) {
+type SwitchInput struct {
+	Pin                  uint32          `protobuf:"varint,1,opt,name=Pin,proto3" json:"Pin,omitempty"`
+	InputType            SwitchInputType `protobuf:"varint,2,opt,name=InputType,proto3,enum=SwitchInputType" json:"InputType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *SwitchInput) Reset()         { *m = SwitchInput{} }
+func (m *SwitchInput) String() string { return proto.CompactTextString(m) }
+func (*SwitchInput) ProtoMessage()    {}
+func (*SwitchInput) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4dc296cbfe5ffcd5, []int{8}
 }
 
-func (m *GetSwitchState) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetSwitchState.Unmarshal(m, b)
+func (m *SwitchInput) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SwitchInput.Unmarshal(m, b)
 }
-func (m *GetSwitchState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetSwitchState.Marshal(b, m, deterministic)
+func (m *SwitchInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SwitchInput.Marshal(b, m, deterministic)
 }
-func (m *GetSwitchState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetSwitchState.Merge(m, src)
+func (m *SwitchInput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SwitchInput.Merge(m, src)
 }
-func (m *GetSwitchState) XXX_Size() int {
-	return xxx_messageInfo_GetSwitchState.Size(m)
+func (m *SwitchInput) XXX_Size() int {
+	return xxx_messageInfo_SwitchInput.Size(m)
 }
-func (m *GetSwitchState) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetSwitchState.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetSwitchState proto.InternalMessageInfo
-
-type GetTemperatureValue struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+func (m *SwitchInput) XXX_DiscardUnknown() {
+	xxx_messageInfo_SwitchInput.DiscardUnknown(m)
 }
 
-func (m *GetTemperatureValue) Reset()         { *m = GetTemperatureValue{} }
-func (m *GetTemperatureValue) String() string { return proto.CompactTextString(m) }
-func (*GetTemperatureValue) ProtoMessage()    {}
-func (*GetTemperatureValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4dc296cbfe5ffcd5, []int{9}
+var xxx_messageInfo_SwitchInput proto.InternalMessageInfo
+
+func (m *SwitchInput) GetPin() uint32 {
+	if m != nil {
+		return m.Pin
+	}
+	return 0
 }
 
-func (m *GetTemperatureValue) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetTemperatureValue.Unmarshal(m, b)
+func (m *SwitchInput) GetInputType() SwitchInputType {
+	if m != nil {
+		return m.InputType
+	}
+	return SwitchInputType_SwitchInputTypeOnOff
 }
-func (m *GetTemperatureValue) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetTemperatureValue.Marshal(b, m, deterministic)
-}
-func (m *GetTemperatureValue) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetTemperatureValue.Merge(m, src)
-}
-func (m *GetTemperatureValue) XXX_Size() int {
-	return xxx_messageInfo_GetTemperatureValue.Size(m)
-}
-func (m *GetTemperatureValue) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetTemperatureValue.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetTemperatureValue proto.InternalMessageInfo
 
 type SwitchState struct {
-	State                bool     `protobuf:"varint,1,opt,name=State,proto3" json:"State,omitempty"`
+	DeviceID             uint32   `protobuf:"varint,1,opt,name=DeviceID,proto3" json:"DeviceID,omitempty"`
+	State                bool     `protobuf:"varint,2,opt,name=State,proto3" json:"State,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -577,7 +630,7 @@ func (m *SwitchState) Reset()         { *m = SwitchState{} }
 func (m *SwitchState) String() string { return proto.CompactTextString(m) }
 func (*SwitchState) ProtoMessage()    {}
 func (*SwitchState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4dc296cbfe5ffcd5, []int{10}
+	return fileDescriptor_4dc296cbfe5ffcd5, []int{9}
 }
 
 func (m *SwitchState) XXX_Unmarshal(b []byte) error {
@@ -598,12 +651,89 @@ func (m *SwitchState) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SwitchState proto.InternalMessageInfo
 
+func (m *SwitchState) GetDeviceID() uint32 {
+	if m != nil {
+		return m.DeviceID
+	}
+	return 0
+}
+
 func (m *SwitchState) GetState() bool {
 	if m != nil {
 		return m.State
 	}
 	return false
 }
+
+type GetSwitchState struct {
+	DeviceID             uint32   `protobuf:"varint,1,opt,name=DeviceID,proto3" json:"DeviceID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetSwitchState) Reset()         { *m = GetSwitchState{} }
+func (m *GetSwitchState) String() string { return proto.CompactTextString(m) }
+func (*GetSwitchState) ProtoMessage()    {}
+func (*GetSwitchState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4dc296cbfe5ffcd5, []int{10}
+}
+
+func (m *GetSwitchState) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetSwitchState.Unmarshal(m, b)
+}
+func (m *GetSwitchState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetSwitchState.Marshal(b, m, deterministic)
+}
+func (m *GetSwitchState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetSwitchState.Merge(m, src)
+}
+func (m *GetSwitchState) XXX_Size() int {
+	return xxx_messageInfo_GetSwitchState.Size(m)
+}
+func (m *GetSwitchState) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetSwitchState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetSwitchState proto.InternalMessageInfo
+
+func (m *GetSwitchState) GetDeviceID() uint32 {
+	if m != nil {
+		return m.DeviceID
+	}
+	return 0
+}
+
+type GetTemperatureValue struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetTemperatureValue) Reset()         { *m = GetTemperatureValue{} }
+func (m *GetTemperatureValue) String() string { return proto.CompactTextString(m) }
+func (*GetTemperatureValue) ProtoMessage()    {}
+func (*GetTemperatureValue) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4dc296cbfe5ffcd5, []int{11}
+}
+
+func (m *GetTemperatureValue) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetTemperatureValue.Unmarshal(m, b)
+}
+func (m *GetTemperatureValue) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetTemperatureValue.Marshal(b, m, deterministic)
+}
+func (m *GetTemperatureValue) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTemperatureValue.Merge(m, src)
+}
+func (m *GetTemperatureValue) XXX_Size() int {
+	return xxx_messageInfo_GetTemperatureValue.Size(m)
+}
+func (m *GetTemperatureValue) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTemperatureValue.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTemperatureValue proto.InternalMessageInfo
 
 type TemperatureValue struct {
 	TemperatureValue     float32  `protobuf:"fixed32,1,opt,name=TemperatureValue,proto3" json:"TemperatureValue,omitempty"`
@@ -617,7 +747,7 @@ func (m *TemperatureValue) Reset()         { *m = TemperatureValue{} }
 func (m *TemperatureValue) String() string { return proto.CompactTextString(m) }
 func (*TemperatureValue) ProtoMessage()    {}
 func (*TemperatureValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4dc296cbfe5ffcd5, []int{11}
+	return fileDescriptor_4dc296cbfe5ffcd5, []int{12}
 }
 
 func (m *TemperatureValue) XXX_Unmarshal(b []byte) error {
@@ -650,101 +780,6 @@ func (m *TemperatureValue) GetHumidityValue() float32 {
 		return m.HumidityValue
 	}
 	return 0
-}
-
-type SwitchConfig struct {
-	WithHardwareControl  bool            `protobuf:"varint,1,opt,name=WithHardwareControl,proto3" json:"WithHardwareControl,omitempty"`
-	WithSoftwareControl  bool            `protobuf:"varint,2,opt,name=WithSoftwareControl,proto3" json:"WithSoftwareControl,omitempty"`
-	WithOutput           bool            `protobuf:"varint,3,opt,name=WithOutput,proto3" json:"WithOutput,omitempty"`
-	WithInvertedOutput   bool            `protobuf:"varint,4,opt,name=WithInvertedOutput,proto3" json:"WithInvertedOutput,omitempty"`
-	InputPin             uint32          `protobuf:"varint,5,opt,name=InputPin,proto3" json:"InputPin,omitempty"`
-	OutputPin            uint32          `protobuf:"varint,6,opt,name=OutputPin,proto3" json:"OutputPin,omitempty"`
-	InvertedOutputPin    uint32          `protobuf:"varint,7,opt,name=InvertedOutputPin,proto3" json:"InvertedOutputPin,omitempty"`
-	InputType            SwitchInputType `protobuf:"varint,8,opt,name=InputType,proto3,enum=SwitchInputType" json:"InputType,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
-}
-
-func (m *SwitchConfig) Reset()         { *m = SwitchConfig{} }
-func (m *SwitchConfig) String() string { return proto.CompactTextString(m) }
-func (*SwitchConfig) ProtoMessage()    {}
-func (*SwitchConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4dc296cbfe5ffcd5, []int{12}
-}
-
-func (m *SwitchConfig) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SwitchConfig.Unmarshal(m, b)
-}
-func (m *SwitchConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SwitchConfig.Marshal(b, m, deterministic)
-}
-func (m *SwitchConfig) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SwitchConfig.Merge(m, src)
-}
-func (m *SwitchConfig) XXX_Size() int {
-	return xxx_messageInfo_SwitchConfig.Size(m)
-}
-func (m *SwitchConfig) XXX_DiscardUnknown() {
-	xxx_messageInfo_SwitchConfig.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SwitchConfig proto.InternalMessageInfo
-
-func (m *SwitchConfig) GetWithHardwareControl() bool {
-	if m != nil {
-		return m.WithHardwareControl
-	}
-	return false
-}
-
-func (m *SwitchConfig) GetWithSoftwareControl() bool {
-	if m != nil {
-		return m.WithSoftwareControl
-	}
-	return false
-}
-
-func (m *SwitchConfig) GetWithOutput() bool {
-	if m != nil {
-		return m.WithOutput
-	}
-	return false
-}
-
-func (m *SwitchConfig) GetWithInvertedOutput() bool {
-	if m != nil {
-		return m.WithInvertedOutput
-	}
-	return false
-}
-
-func (m *SwitchConfig) GetInputPin() uint32 {
-	if m != nil {
-		return m.InputPin
-	}
-	return 0
-}
-
-func (m *SwitchConfig) GetOutputPin() uint32 {
-	if m != nil {
-		return m.OutputPin
-	}
-	return 0
-}
-
-func (m *SwitchConfig) GetInvertedOutputPin() uint32 {
-	if m != nil {
-		return m.InvertedOutputPin
-	}
-	return 0
-}
-
-func (m *SwitchConfig) GetInputType() SwitchInputType {
-	if m != nil {
-		return m.InputType
-	}
-	return SwitchInputType_SwitchInputTypeOnOff
 }
 
 type TemperatureSensorConfig struct {
@@ -820,56 +855,58 @@ func init() {
 	proto.RegisterType((*HubConfig)(nil), "HubConfig")
 	proto.RegisterType((*DeviceConfig)(nil), "DeviceConfig")
 	proto.RegisterType((*ContactSensorConfig)(nil), "ContactSensorConfig")
-	proto.RegisterType((*SetSwitchState)(nil), "SetSwitchState")
+	proto.RegisterType((*SwitchConfig)(nil), "SwitchConfig")
+	proto.RegisterType((*SwitchInput)(nil), "SwitchInput")
+	proto.RegisterType((*SwitchState)(nil), "SwitchState")
 	proto.RegisterType((*GetSwitchState)(nil), "GetSwitchState")
 	proto.RegisterType((*GetTemperatureValue)(nil), "GetTemperatureValue")
-	proto.RegisterType((*SwitchState)(nil), "SwitchState")
 	proto.RegisterType((*TemperatureValue)(nil), "TemperatureValue")
-	proto.RegisterType((*SwitchConfig)(nil), "SwitchConfig")
 	proto.RegisterType((*TemperatureSensorConfig)(nil), "TemperatureSensorConfig")
 }
 
-func init() { proto.RegisterFile("messages.proto", fileDescriptor_4dc296cbfe5ffcd5) }
+func init() {
+	proto.RegisterFile("messages.proto", fileDescriptor_4dc296cbfe5ffcd5)
+}
 
 var fileDescriptor_4dc296cbfe5ffcd5 = []byte{
-	// 619 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x55, 0xef, 0x6f, 0xd2, 0x4e,
-	0x18, 0xa7, 0xdd, 0x18, 0xf0, 0x30, 0xf8, 0xf6, 0x7b, 0xc0, 0xac, 0x8b, 0x59, 0xc8, 0x69, 0x94,
-	0x4c, 0xd3, 0xb8, 0x2e, 0xf1, 0x95, 0x6f, 0xdc, 0xd0, 0x15, 0x13, 0x65, 0x69, 0x89, 0x7b, 0x6b,
-	0x81, 0x63, 0x6b, 0x02, 0xd7, 0xe6, 0x7a, 0x65, 0xf2, 0x57, 0xf9, 0xff, 0xf8, 0xd7, 0x98, 0xde,
-	0x15, 0xda, 0x42, 0x87, 0xef, 0x78, 0x3e, 0xbf, 0xf2, 0xe9, 0x73, 0x4f, 0x02, 0x34, 0x17, 0x24,
-	0x0c, 0xdd, 0x7b, 0x12, 0x1a, 0x01, 0xf3, 0xb9, 0x8f, 0x7f, 0x41, 0x79, 0xe4, 0x5b, 0xd1, 0x18,
-	0xb5, 0x93, 0x1f, 0xba, 0xd2, 0x55, 0x7a, 0x0d, 0x3b, 0x41, 0xbf, 0x43, 0xe7, 0x86, 0xf0, 0x6b,
-	0x9f, 0x72, 0x77, 0xc2, 0x1d, 0x42, 0x43, 0x9f, 0x39, 0xdc, 0xe5, 0x44, 0x2f, 0x77, 0x95, 0x5e,
-	0xdd, 0x3c, 0x31, 0x0a, 0x59, 0xab, 0x64, 0x17, 0xdb, 0xae, 0x6a, 0x50, 0xf9, 0x26, 0x0b, 0xe0,
-	0xcb, 0x27, 0xa2, 0xd1, 0x29, 0x54, 0xfb, 0x64, 0xe9, 0x4d, 0xc8, 0xa0, 0x9f, 0x94, 0xd9, 0xcc,
-	0x78, 0x05, 0xf5, 0x91, 0xff, 0x69, 0x32, 0x21, 0x61, 0xe8, 0xb3, 0x15, 0xd2, 0xa1, 0xf2, 0x85,
-	0xf9, 0x8b, 0xb4, 0xf6, 0x7a, 0x44, 0x9f, 0x01, 0x3d, 0xd9, 0xba, 0x65, 0x14, 0x56, 0x46, 0xfb,
-	0xfb, 0xf6, 0x8b, 0x12, 0xf7, 0x95, 0x45, 0x08, 0x0e, 0x87, 0x01, 0xa1, 0xba, 0xda, 0x55, 0x7a,
-	0x55, 0x5b, 0xfc, 0xc6, 0x5f, 0xa1, 0x66, 0x45, 0xe3, 0x6b, 0x9f, 0xce, 0xbc, 0xfb, 0x78, 0xe7,
-	0x56, 0x34, 0xde, 0x38, 0xe5, 0x80, 0xde, 0x40, 0x45, 0x46, 0x84, 0xba, 0xda, 0x3d, 0xe8, 0xd5,
-	0xcd, 0x86, 0x21, 0x67, 0xe9, 0xb2, 0xd7, 0x2c, 0x66, 0x70, 0x9c, 0x25, 0xf6, 0x76, 0xf9, 0x08,
-	0x8d, 0x5c, 0x7b, 0x51, 0xaa, 0x6e, 0xb6, 0xf3, 0xab, 0x90, 0x41, 0x56, 0xc9, 0xce, 0x8b, 0xaf,
-	0xaa, 0x70, 0x24, 0x29, 0xfc, 0x16, 0x5a, 0x05, 0x8e, 0xf8, 0x4b, 0x06, 0xf4, 0xd6, 0xa3, 0xeb,
-	0x2f, 0x11, 0x03, 0x7e, 0x0d, 0x4d, 0x87, 0x70, 0xe7, 0xd1, 0xe3, 0x93, 0x07, 0xb9, 0xae, 0x36,
-	0x94, 0xe5, 0x4b, 0x28, 0x62, 0x27, 0x72, 0xc0, 0x1a, 0x34, 0x6f, 0x72, 0x3a, 0xdc, 0x81, 0xd6,
-	0x0d, 0xe1, 0x23, 0xb2, 0x08, 0x08, 0x73, 0x79, 0xc4, 0xc8, 0x0f, 0x77, 0x1e, 0x11, 0xfc, 0x12,
-	0xea, 0xff, 0x4e, 0x9b, 0x82, 0xb6, 0x6d, 0x44, 0xe7, 0xbb, 0x98, 0x30, 0xa9, 0xf6, 0xae, 0xf6,
-	0x15, 0x34, 0xac, 0x68, 0xe1, 0x4d, 0x3d, 0xbe, 0x92, 0x42, 0x55, 0x08, 0xf3, 0x20, 0xfe, 0xa3,
-	0xc2, 0xb1, 0xec, 0x92, 0xac, 0xe0, 0x3d, 0xb4, 0xee, 0x3c, 0xfe, 0x60, 0xb9, 0x6c, 0xfa, 0xe8,
-	0xb2, 0xf8, 0x4d, 0x38, 0xf3, 0xe7, 0x49, 0xb5, 0x22, 0x6a, 0xed, 0x70, 0xfc, 0x19, 0xcf, 0x3a,
-	0xd4, 0xd4, 0xb1, 0x45, 0xa1, 0x33, 0x80, 0x18, 0x1e, 0x46, 0x3c, 0x88, 0xb8, 0x7e, 0x20, 0x84,
-	0x19, 0x04, 0x19, 0x80, 0xe2, 0x69, 0x40, 0x97, 0x84, 0x71, 0x32, 0x4d, 0x74, 0x87, 0x42, 0x57,
-	0xc0, 0xc4, 0x17, 0x33, 0xa0, 0x41, 0xc4, 0xe3, 0x97, 0x2b, 0xcb, 0x8b, 0x59, 0xcf, 0xe8, 0x05,
-	0xd4, 0xa4, 0x2a, 0x26, 0x8f, 0x04, 0x99, 0x02, 0xe8, 0x1d, 0xfc, 0x9f, 0xcf, 0x8a, 0x55, 0x15,
-	0xa1, 0xda, 0x25, 0x90, 0x01, 0x35, 0x91, 0x3b, 0x5a, 0x05, 0x44, 0xaf, 0x76, 0x95, 0x5e, 0xd3,
-	0xd4, 0x0c, 0xb9, 0xbd, 0x0d, 0x6e, 0xa7, 0x12, 0xfc, 0x5b, 0x81, 0x67, 0x99, 0x77, 0xc9, 0x9d,
-	0xda, 0x07, 0x00, 0x39, 0x8b, 0x30, 0x45, 0x84, 0x9d, 0x18, 0x3b, 0x6a, 0x11, 0x99, 0x51, 0xa6,
-	0x27, 0xaa, 0x66, 0x4e, 0x14, 0x61, 0x38, 0x76, 0x08, 0x9d, 0x0e, 0x28, 0x27, 0x6c, 0xe9, 0xce,
-	0xc5, 0x4e, 0x1b, 0x76, 0x0e, 0x8b, 0x35, 0x36, 0x71, 0x53, 0xcd, 0xa1, 0xd4, 0x64, 0xb1, 0xf3,
-	0x3b, 0xe8, 0x14, 0x56, 0x40, 0x67, 0x70, 0x5a, 0x48, 0xf4, 0xad, 0xd1, 0xc5, 0x85, 0x56, 0xda,
-	0xc7, 0x9b, 0xa6, 0xa6, 0x9c, 0xff, 0x84, 0xff, 0xb6, 0x16, 0x85, 0x74, 0x68, 0x6f, 0x41, 0x43,
-	0x3a, 0x9c, 0xcd, 0xb4, 0x52, 0x01, 0x73, 0x1b, 0xcd, 0x43, 0xa2, 0x29, 0xe8, 0x39, 0x74, 0xb6,
-	0x98, 0xeb, 0x07, 0x97, 0xde, 0x13, 0x4d, 0x1d, 0x1f, 0x89, 0x7f, 0x82, 0xcb, 0xbf, 0x01, 0x00,
-	0x00, 0xff, 0xff, 0x94, 0x19, 0x0a, 0x10, 0x1b, 0x06, 0x00, 0x00,
+	// 620 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x55, 0xed, 0x6a, 0xdb, 0x3c,
+	0x14, 0x8e, 0xdc, 0x36, 0x69, 0x8e, 0xe3, 0xd4, 0xa8, 0x49, 0x5f, 0xbf, 0x65, 0x8c, 0x20, 0x0a,
+	0x0d, 0xdd, 0x30, 0xab, 0x0b, 0x85, 0xc1, 0x60, 0xac, 0xcd, 0x56, 0x67, 0xb0, 0xa5, 0x28, 0x61,
+	0xfb, 0x3b, 0x27, 0x55, 0x5b, 0x43, 0x63, 0x1b, 0x5b, 0xee, 0xc8, 0xb5, 0xec, 0x12, 0xf6, 0x63,
+	0x17, 0xb6, 0x9b, 0x18, 0x96, 0x9c, 0xf8, 0x23, 0x4e, 0xfe, 0xe9, 0x3c, 0x1f, 0x27, 0x3a, 0xcf,
+	0x91, 0x09, 0xb4, 0xe7, 0x2c, 0x8a, 0x9c, 0x07, 0x16, 0x99, 0x41, 0xe8, 0x73, 0x9f, 0xfc, 0x45,
+	0xb0, 0x37, 0xf1, 0xed, 0x78, 0x8a, 0x3b, 0xe9, 0xc1, 0x40, 0x3d, 0xd4, 0xd7, 0x68, 0x8a, 0x7e,
+	0x85, 0xee, 0x0d, 0xe3, 0xd7, 0xbe, 0xc7, 0x9d, 0x19, 0x1f, 0x33, 0x2f, 0xf2, 0xc3, 0x31, 0x77,
+	0x38, 0x33, 0xf6, 0x7a, 0xa8, 0xaf, 0x5a, 0x47, 0x66, 0x25, 0x6b, 0xd7, 0x68, 0xb5, 0x0d, 0xbf,
+	0x85, 0xf6, 0x0d, 0xe3, 0xe3, 0x9f, 0x2e, 0x9f, 0x3d, 0xca, 0x46, 0x75, 0xd1, 0xe8, 0xc0, 0x2c,
+	0xc2, 0x76, 0x8d, 0x96, 0x84, 0xf8, 0x12, 0xda, 0xe3, 0xa2, 0xb5, 0x21, 0xac, 0x2d, 0xb3, 0xe4,
+	0x2b, 0xaa, 0xae, 0x9a, 0xd0, 0xf8, 0x22, 0x87, 0x26, 0x17, 0x1b, 0xa6, 0xc1, 0xc7, 0xb0, 0x3f,
+	0x60, 0xcf, 0xee, 0x8c, 0x0d, 0x07, 0xe9, 0xfc, 0xab, 0x9a, 0xfc, 0x46, 0xa0, 0x4e, 0xfc, 0x0f,
+	0xb3, 0x19, 0x8b, 0x22, 0x3f, 0x5c, 0x60, 0x03, 0x1a, 0x9f, 0x42, 0x7f, 0x9e, 0x45, 0xb5, 0x2c,
+	0xf1, 0x47, 0xc0, 0x1b, 0x93, 0x3a, 0x34, 0x2b, 0x63, 0xaa, 0x30, 0xe0, 0x37, 0xa0, 0xae, 0x07,
+	0x54, 0x9e, 0x52, 0xdd, 0x30, 0xe2, 0xa0, 0xea, 0x0e, 0xdb, 0xe6, 0xc3, 0x18, 0x76, 0x47, 0x01,
+	0xf3, 0x0c, 0xa5, 0x87, 0xfa, 0xfb, 0x54, 0x9c, 0xc9, 0x67, 0x68, 0xda, 0xf1, 0xf4, 0xda, 0xf7,
+	0xee, 0xdd, 0x87, 0xe4, 0x65, 0xd8, 0xf1, 0x74, 0xe5, 0x94, 0x05, 0x3e, 0x85, 0x86, 0x6c, 0x11,
+	0x19, 0x4a, 0x6f, 0xa7, 0xaf, 0x5a, 0x9a, 0x29, 0x6b, 0xe9, 0xa2, 0x4b, 0x96, 0xfc, 0x42, 0xd0,
+	0xca, 0x33, 0x5b, 0x2f, 0xf3, 0x0e, 0xb4, 0xc2, 0xf5, 0xc5, 0xad, 0x54, 0xab, 0x53, 0x4c, 0x4f,
+	0x36, 0xb2, 0x6b, 0xb4, 0x28, 0xc6, 0xa7, 0x50, 0x97, 0xb1, 0x18, 0x3b, 0xc2, 0xa6, 0xa5, 0xa1,
+	0xad, 0xf4, 0x29, 0x7d, 0xb5, 0x0f, 0x75, 0x89, 0x91, 0x57, 0x70, 0x58, 0xd1, 0x3a, 0x99, 0x79,
+	0xe8, 0xdd, 0xba, 0xde, 0x72, 0x66, 0x51, 0x10, 0x0a, 0xad, 0x7c, 0x43, 0x7c, 0x02, 0xf5, 0xa1,
+	0x17, 0xc4, 0x3c, 0x32, 0x90, 0x88, 0x60, 0xb9, 0x24, 0x01, 0xd2, 0x94, 0xc3, 0x2f, 0xa0, 0x39,
+	0x8a, 0x79, 0x10, 0xf3, 0xa4, 0x9f, 0x22, 0xfa, 0x65, 0x00, 0x19, 0x2d, 0xb7, 0x2d, 0xd4, 0x58,
+	0x87, 0x9d, 0xec, 0x67, 0x93, 0x23, 0x36, 0xa1, 0x29, 0xa8, 0xc9, 0x22, 0x60, 0xc2, 0xde, 0xb6,
+	0xf4, 0xfc, 0xef, 0x24, 0x38, 0xcd, 0x24, 0xe4, 0x7d, 0xe1, 0xf9, 0x6c, 0x4d, 0xbb, 0x03, 0x7b,
+	0xf2, 0x8d, 0xc9, 0xdd, 0xcb, 0x82, 0xbc, 0x2e, 0x7f, 0xa3, 0x5b, 0x3f, 0x8f, 0x2e, 0x1c, 0xde,
+	0x30, 0x3e, 0x61, 0xf3, 0x80, 0x85, 0x0e, 0x8f, 0x43, 0xf6, 0xcd, 0x79, 0x8a, 0x19, 0xb9, 0x03,
+	0xbd, 0x8c, 0xe1, 0xb3, 0x75, 0x4c, 0xb4, 0x53, 0xe8, 0xba, 0xf6, 0x04, 0x34, 0x3b, 0x9e, 0xbb,
+	0x77, 0x2e, 0x5f, 0x48, 0xa1, 0x22, 0x84, 0x45, 0x90, 0xfc, 0x41, 0xf0, 0x5f, 0xce, 0x5a, 0x58,
+	0xe1, 0x25, 0x80, 0xac, 0x45, 0x70, 0x48, 0x04, 0x77, 0x64, 0xae, 0xa9, 0x45, 0x7c, 0x39, 0x65,
+	0xb6, 0x7a, 0x25, 0xb7, 0x7a, 0x4c, 0xa0, 0x35, 0x66, 0xde, 0xdd, 0xd0, 0xe3, 0x2c, 0x7c, 0x76,
+	0x9e, 0xc4, 0x03, 0xd3, 0x68, 0x01, 0x4b, 0x34, 0x94, 0x39, 0x99, 0x66, 0x57, 0x6a, 0xf2, 0xd8,
+	0xd9, 0x77, 0xe8, 0x56, 0x5e, 0x01, 0xbf, 0x84, 0xe3, 0x4a, 0x62, 0x60, 0x4f, 0xce, 0xcf, 0xf5,
+	0xda, 0x36, 0xde, 0xb2, 0x74, 0x74, 0xf6, 0x03, 0x0e, 0x4a, 0x8f, 0x02, 0x1b, 0xd0, 0x29, 0x41,
+	0x23, 0x6f, 0x74, 0x7f, 0xaf, 0xd7, 0x2a, 0x98, 0xdb, 0xf8, 0x29, 0x62, 0x3a, 0xc2, 0xff, 0x43,
+	0xb7, 0xc4, 0x5c, 0x3f, 0x3a, 0xde, 0x03, 0xd3, 0x95, 0x69, 0x5d, 0xfc, 0x65, 0x5c, 0xfc, 0x0b,
+	0x00, 0x00, 0xff, 0xff, 0xcc, 0x14, 0x4e, 0xba, 0x44, 0x06, 0x00, 0x00,
 }

@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/golang/protobuf/jsonpb"
 	"log"
 
 	"github.com/am-x/homekit/app/shared/messages"
 	"github.com/am-x/homekit/app/shared/transport"
+	"github.com/golang/protobuf/jsonpb"
 	"gobot.io/x/gobot/platforms/mqtt"
 )
 
@@ -65,17 +65,7 @@ func (t *Transport) ToHub(hubID uint32, message *messages.ToHub, opts ...transpo
 		return err
 	}
 
-	options := transport.DefaultOptions()
-
-	for _, o := range opts {
-		o(options)
-	}
-
 	topic := fmt.Sprintf("to/hub/%d", hubID)
-
-	if options.HubDeviceID > 0 {
-		topic += "/" + fmt.Sprintf("%d", options.HubDeviceID)
-	}
 
 	if ok := t.adaptor.Publish(topic, []byte(b)); !ok {
 		return errors.New("message not published")
@@ -85,20 +75,10 @@ func (t *Transport) ToHub(hubID uint32, message *messages.ToHub, opts ...transpo
 }
 
 func (t *Transport) OnHubMessage(hubID uint32, h transport.HubMessageHandler, opts ...transport.Option) error {
-	options := transport.DefaultOptions()
-
-	for _, o := range opts {
-		o(options)
-	}
-
 	topic := fmt.Sprintf("to/hub/%d", hubID)
 
-	if options.HubDeviceID > 0 {
-		topic += "/" + fmt.Sprintf("%d", options.HubDeviceID)
-	}
-
-	t.adaptor.On(topic, func(msg mqtt.Message) {
-		var message *messages.ToHub
+	token, err := t.adaptor.OnWithQOS(topic, 0, func(msg mqtt.Message) {
+		message := new(messages.ToHub)
 
 		if err := jsonpb.Unmarshal(bytes.NewReader(msg.Payload()), message); err != nil {
 			log.Println("unmarshal message", err)
@@ -106,6 +86,14 @@ func (t *Transport) OnHubMessage(hubID uint32, h transport.HubMessageHandler, op
 
 		_ = h(message)
 	})
+
+	if err != nil {
+		return err
+	}
+
+	if ok := token.Wait(); !ok && token.Error() != nil {
+		return token.Error()
+	}
 
 	return nil
 }

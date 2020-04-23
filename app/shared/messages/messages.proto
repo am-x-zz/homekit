@@ -4,6 +4,8 @@ message ToHub {
     uint32 ToHub = 1;
     oneof Message {
         GetContactSensorState GetContactSensorState = 5;
+        GetSwitchState GetSwitchState = 6;
+        SwitchState SetSwitchState = 7;
     }
 }
 
@@ -15,6 +17,7 @@ message ToAccessory {
     uint32 FromHub = 1;
     oneof Message {
         ContactSensorState ContactSensorState = 5;
+        SwitchState SwitchState = 6;
     }
 }
 
@@ -32,6 +35,7 @@ message DeviceConfig {
     uint32 DeviceID = 1;
     oneof Config {
         ContactSensorConfig ContactSensor = 2;
+        SwitchConfig Switch = 3;
     }
 }
 
@@ -39,19 +43,28 @@ message ContactSensorConfig {
     uint32 InPin = 1;
 }
 
-// -----------------------
-message SetSwitchState {
-    bool State = 1;
+message SwitchConfig {
+    repeated SwitchInput Inputs = 1;
+    uint32 OutputPin = 2;
 }
 
-message GetSwitchState {
-}
-
-message GetTemperatureValue {
+message SwitchInput {
+    uint32 Pin = 1;
+    SwitchInputType InputType = 2;
 }
 
 message SwitchState {
-    bool State = 1;
+    uint32 DeviceID = 1;
+    bool State = 2;
+}
+
+message GetSwitchState {
+    uint32 DeviceID = 1;
+}
+
+// -----------------------
+
+message GetTemperatureValue {
 }
 
 message TemperatureValue {
@@ -59,16 +72,16 @@ message TemperatureValue {
     float HumidityValue = 2;
 }
 
-message SwitchConfig {
-    bool WithHardwareControl = 1;
-    bool WithSoftwareControl = 2;
-    bool WithOutput = 3;
-    bool WithInvertedOutput = 4;
-    uint32 InputPin = 5;
-    uint32 OutputPin = 6;
-    uint32 InvertedOutputPin = 7;
-    SwitchInputType InputType = 8;
-}
+//message SwitchConfig {
+//    bool WithHardwareControl = 1;
+//    bool WithSoftwareControl = 2;
+//    bool WithOutput = 3;
+//    bool WithInvertedOutput = 4;
+//    uint32 InputPin = 5;
+//    uint32 OutputPin = 6;
+//    uint32 InvertedOutputPin = 7;
+//    SwitchInputType InputType = 8;
+//}
 
 message TemperatureSensorConfig {
     TemperatureSensorType SensorType = 1;
